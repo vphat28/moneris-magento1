@@ -1,0 +1,8 @@
+Magento Moneris Payments Module for Magento 1.3.2.x
+
+Please refer to our website for installation instructions
+
+
+http://www.collinsharper.com
+
+Collins Harper

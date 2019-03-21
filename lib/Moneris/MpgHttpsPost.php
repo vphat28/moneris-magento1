@@ -1,0 +1,115 @@
+<?php
+
+
+
+###################### mpgHttpsPost #########################################
+
+class Moneris_mpgHttpsPost
+{
+
+ 	var $api_token;
+ 	var $store_id;
+ 	var $mpgRequest;
+ 	var $mpgResponse;
+
+ 	function Moneris_mpgHttpsPost($storeid,$apitoken,$mpgRequestOBJ, $isUs = false)
+ 	{
+
+  		$this->store_id=$storeid;
+  		$this->api_token= $apitoken;
+  		$this->mpgRequest=$mpgRequestOBJ;
+  		$dataToSend=$this->toXML();
+
+		//print("String to be sent = " . $dataToSend);
+         // we treat all transactions as live transactions unless someone sets the test constant
+
+
+  		//do post
+
+  		$g=new Moneris_MpgGlobals();
+  		$gArray=$g->getGlobals();
+         $gArray['MONERIS_HOST'] = 'www3.moneris.com';
+         if(defined('MONERIS_TEST') && MONERIS_TEST == 1)
+         {
+             $gArray['MONERIS_HOST'] = 'esqa.moneris.com';
+         }
+         if($isUs)
+         {
+             $g->setUsMode();
+             $gArray['MONERIS_HOST'] = 'esplus.moneris.com';
+             if(defined('MONERIS_TEST') && MONERIS_TEST == 1)
+             {
+                 $gArray['MONERIS_HOST'] = 'esplusqa.moneris.com';
+             }
+
+         }
+         $transactionType=$mpgRequestOBJ->getTransactionType();
+
+         $url=$gArray['MONERIS_PROTOCOL']."://".
+             $gArray['MONERIS_HOST'].":".
+             $gArray['MONERIS_PORT'].
+             $gArray['MONERIS_FILE'];
+        if (defined('MONERIS_TEST') && MONERIS_TEST == 1) {
+            Mage::helper('moneriscc')->log(__METHOD__ . __LINE__ . 'POSTING TO ' . $url);
+        }
+
+  		$ch = curl_init();
+ 		curl_setopt($ch, CURLOPT_URL,$url);
+  		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+  		curl_setopt ($ch, CURLOPT_HEADER, 0);
+  		curl_setopt($ch, CURLOPT_POST, 1);
+  		curl_setopt($ch, CURLOPT_POSTFIELDS,$dataToSend);
+         curl_setopt($ch,CURLOPT_TIMEOUT,$gArray['CLIENT_TIMEOUT']);
+         curl_setopt($ch,CURLOPT_USERAGENT,$gArray['API_VERSION']);
+  		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
+
+  		$response=curl_exec ($ch);
+
+  		curl_close ($ch);
+
+  		if(!$response)
+  		{
+
+     			$response="<?xml version=\"1.0\"?><response><receipt>".
+          			"<ReceiptId>Global Error Receipt</ReceiptId>".
+          			"<ReferenceNum>null</ReferenceNum><ResponseCode>null</ResponseCode>".
+          			"<AuthCode>null</AuthCode><TransTime>null</TransTime>".
+          			"<TransDate>null</TransDate><TransType>null</TransType><Complete>false</Complete>".
+          			"<Message>Global Error Receipt</Message><TransAmount>null</TransAmount>".
+          			"<CardType>null</CardType>".
+          			"<TransID>null</TransID><TimedOut>null</TimedOut>".
+          			"<CorporateCard>false</CorporateCard><MessageId>null</MessageId>".
+          			"</receipt></response>";
+   		}
+
+  		$this->mpgResponse=new Moneris_MpgResponse($response);
+
+ 	}
+
+
+
+ 	function getMpgResponse()
+ 	{
+  		return $this->mpgResponse;
+
+ 	}
+
+ 	function toXML( )
+ 	{
+	        $xmlString = '';
+  		$req=$this->mpgRequest ;
+  		$reqXMLString=$req->toXML();
+
+  		$xmlString .= "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>".
+               			"<request>".
+               			"<store_id>$this->store_id</store_id>".
+               			"<api_token>$this->api_token</api_token>".
+                		$reqXMLString.
+                		"</request>";
+
+  		return ($xmlString);
+
+ 	}
+
+}//end class mpgHttpsPost
+

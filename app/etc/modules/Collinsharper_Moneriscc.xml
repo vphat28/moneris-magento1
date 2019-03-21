@@ -1,0 +1,11 @@
+<config>
+    <modules>
+        <Collinsharper_Moneriscc>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Payment />
+            </depends>
+        </Collinsharper_Moneriscc>
+    </modules>
+</config>

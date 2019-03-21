@@ -1,0 +1,12 @@
+<layout version="0.1.0">
+
+<!--
+Default layout, loads most of the pages
+-->
+
+    <default>
+        <reference name="after_body_start">
+            <block type="moneriscc/success" name="moneriscc_success" as="moneriscc_success" />
+        </reference>
+    </default>
+</layout>

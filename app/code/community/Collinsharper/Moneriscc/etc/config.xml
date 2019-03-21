@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+       <Collinsharper_Moneriscc>
+          <version>0.9.9</version>
+       </Collinsharper_Moneriscc>
+    </modules>
+ 
+    <global>
+        <models>
+            <moneriscc>
+                <class>Collinsharper_Moneriscc_Model</class>
+             </moneriscc>
+        </models>
+	<helpers>
+        <moneriscc>
+            <class>Collinsharper_Moneriscc_Helper</class>
+         </moneriscc>
+    </helpers>
+	<blocks>
+        <moneriscc>
+		    <class>Collinsharper_Moneriscc_Block</class>
+		</moneriscc>
+    </blocks>
+        <resources>
+            <moneriscc_setup>
+                <setup>
+                    <module>Collinsharper_Moneriscc</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+             </moneriscc_setup>
+            <moneriscc_write>
+                <connection>
+                  <use>core_write</use>
+                </connection>
+             </moneriscc_write>
+            <moneriscc_read>
+               <connection>
+                <use>core_read</use>
+              </connection>
+             </moneriscc_read>
+        </resources>
+        <events>
+            <sales_order_place_after>
+                <observers>
+                    <Collinsharper_Moneriscc_sales_order_observer>
+                        <type>singleton</type>
+                        <class>moneriscc/sales_order_observer</class>
+                        <method>placeAfter</method>
+                    </Collinsharper_Moneriscc_sales_order_observer>
+                </observers>
+            </sales_order_place_after>
+        </events>
+    </global>
+ 
+    <default>
+        <payment>
+            <moneriscc>
+                <active>0</active>
+                <model>moneriscc/paymentMethod</model>
+                <order_status>1</order_status>
+                <use_customer_name>1</use_customer_name>
+                <force_status></force_status>
+                <title>Credit Card (Provided by CollinsHarper.com)</title>
+                <cctypes>AE,VI,MC,DI,JCB</cctypes>
+                <payment_action>authorize</payment_action>
+                <cvdsuccess>X,Y,A,W,Z,B,C,D,I,P,M,U,S</cvdsuccess>
+                <avssuccess>A,B,C,D,G,I,M,N,P,R,S,T,U,W,X,Y,Z</avssuccess>
+                <responses>AVS:FAILED:Transaction Failed AVS Match, please check billing information.
+50:DECLINED:Your transaction was declined by the merchant bank. Please try another card
+476:DECLINED:(valid decline)  Your transaction was declined by the merchant bank. Please try another card. Or call your bank.
+51:FAILED:I do not know if 51 is valid or not.
+52:DECLINED:All these should be numeric response: DECLINED : then a message. they all must be declined though.
+				</responses>
+                <vbv_enabled>0</vbv_enabled>
+                <require_vbv>0</require_vbv>
+                <allowspecific>0</allowspecific>
+             </moneriscc>
+         </payment>
+    </default>
+
+
+       <frontend>
+            <routers>
+                <moneriscc>
+                    <use>standard</use>
+                    <args>
+                        <module>Collinsharper_Moneriscc</module>
+                        <frontName>moneriscc</frontName>
+                    </args>
+                </moneriscc>
+            </routers>
+				<layout>
+				<updates>
+					<Collinsharper_Moneriscc module="Collinsharper_Moneriscc">
+						<file>Collinsharper_Moneriscc.xml</file>
+					</Collinsharper_Moneriscc>
+				</updates>
+			</layout>
+ <!--  <events>
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <moneriscc_order_success>
+                        <class>moneriscc/observer</class>
+                        <method>showPaymentDetails</method>
+                    </moneriscc_order_success>
+                </observers>
+            </checkout_onepage_controller_success_action>
+     </events>  -->
+           <translate>
+               <modules>
+                   <moneriscc>
+                       <files>
+                           <default>Collinsharper_Monerisccca.csv</default>
+                       </files>
+                   </moneriscc>
+               </modules>
+           </translate>
+
+   </frontend>
+
+	
+</config>

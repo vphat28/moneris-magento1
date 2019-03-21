@@ -1,0 +1,23 @@
+20160225 Kit Lee <klee@collinsharper.com>
+
+app/code/community/Collinsharper/Moneriscc/Model/PaymentMethod.php
+
+Fix the authorize onlt transaction does not allow online capture when invoice.
+
+20160210 Stephen Harper <stharper@collinsharper.com>
+
+app/code/community/Collinsharper/Moneriscc/etc/CHANGELOG.txt
+
+Updated created changelog 
+
+20160209 Shane Harper <sharper@collinsharper.com>
+
+app/code/community/Collinsharper/Moneriscc/Model/Transaction/Preauth.php
+app/code/community/Collinsharper/Moneriscc/Model/Transaction.php
+app/code/community/Collinsharper/Moneriscc/etc/config.xml
+app/code/community/Collinsharper/Moneriscc/etc/system.xml
+
+Updated for human friendly customer id
+
+
+ 

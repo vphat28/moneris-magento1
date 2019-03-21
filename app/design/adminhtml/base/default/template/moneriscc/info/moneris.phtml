@@ -1,0 +1,11 @@
+<?php if($_info = $this->getInfo()): ?>
+<!--<?php echo $this->__('Name on the Card: %s', $this->htmlEscape($this->getInfo()->getCcOwner())) ?><br />-->
+<?php echo $this->__('Credit Card Type: %s', $this->htmlEscape($this->getCcTypeName())) ?><br />
+<?php echo $this->__('Credit Card Number: xxxx-%s', $this->htmlEscape($this->getInfo()->getCcLast4())) ?><br />
+<?php echo $this->__('Expiration Date: %s/%s', $this->htmlEscape($this->getCcExpMonth()), $this->htmlEscape($this->getInfo()->getCcExpYear())) ?><br />
+<?php echo $this->__('CVV Response: %s', $this->htmlEscape(Mage::helper('moneriscc')->getTranspart('cvd',$this->getInfo()->getOrder()->getPayment()->getData('cc_cid_status')))) ?><br />
+<?php echo $this->__('AVS Response: %s', $this->htmlEscape(Mage::helper('moneriscc')->getTranspart('avs',$this->getInfo()->getOrder()->getPayment()->getData('cc_avs_status')))) ?><br />
+
+<?php else: ?>
+
+<?php endif; ?>
